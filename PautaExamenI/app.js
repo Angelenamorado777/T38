@@ -5,29 +5,16 @@ const PORT = 3000;
 
 app.use(express.json());
 
-const libros = [{"id":1,"titulo":"La comunidad del anillo","autor":"Jrr tolkien","anioPublicacion":1955,"estado":"Disponible"}]
 
-app.get("/libros",(req,res)=>{
-    res.json({status:200,message:'Success',data:libros});
+let libros = [{id: 1, titulo:"Game of thrones", autor:"R. R. George Martin", aniopublicacion:"1996", estado:"disponible"},
+{id: 2, titulo:"El Caballero de los 7 reinos", autor:"R. R. George Martin", aniopublicacion:"2015", estado:"prestado"},
+{id: 3, titulo:"La danza de Dragones", autor:"R. R. George Martin", aniopublicacion:"2011", estado:"reservado"},
+{id: 3, titulo:"Fuego y Sangre", autor:"R. R. George Martin", aniopublicacion:"2018", estado:"daniado"}];
 
-});
 
-app.post("/libros",(req,res)=>{
-const{titulo,autor,anioPublicacion,estado} = req.body;
+app.get('Libros')
 
-if( titulo && autor && anioPublicacion && estado){
-    const nuevoLibro = {
-        id: libros.length + 1,
-        titulo,
-        autor,
-        anioPublicacion,
-        estado
-     }
-}
 
-libros.push(nuevoLibro);
-res.json({status:201,message:'Libro agregado',data:nuevoLibro});
-})
 
 app.listen(PORT, ()=>{
     console.log(`Escuchando en http://localhost:${PORT}/`);
