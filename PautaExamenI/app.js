@@ -19,7 +19,39 @@ res.json({status:200, message:"Success",data: libros})
 
 app.post("/libros", (req,res) => {
 
+let id = req.body.id;
+let titulo = req.body.titulo;
+let autor = req.body.autor;
+let aniopublicacion = req.body.aniopublicacion;
+let estado = req.body.estado;
 
+if ( !id || !titulo || !autor || !aniopublicacion || !estado) {
+   return res.status(400).json({mensaje: "Faltan datos"})}
+
+ let valoressugeridos = false;
+ switch (estado) {
+   case 'disponible':
+   case 'prestado':
+   case 'reservado':
+   case 'daniado':
+    valoressugeridos = true;
+    break;
+    default: valoressugeridos = false
+ }
+  if (valoressugeridos === false) {
+    return res.status(400).json({mensaje: "Solo se permiten los valores sugeridos"})
+  }
+
+  let libronuevo = {
+    id: id,
+    titulo: titulo,
+    autor: autor,
+    aniopublicacion: aniopublicacion,
+    estado: estado
+  };
+
+  libros.push(libronuevo);
+  res.status(201).json({mensaje: "Se ingreso correctamente un nuevo libro",data:(libronuevo)})
 });
 
 
