@@ -6,10 +6,10 @@ const PORT = 3000;
 app.use(express.json());
 
 
-let libros = [{id: 1, titulo:"Game of thrones", autor:"R. R. George Martin", aniopublicacion:"1996", estado:"disponible"},
-{id: 2, titulo:"El Caballero de los 7 reinos", autor:"R. R. George Martin", aniopublicacion:"2015", estado:"prestado"},
-{id: 3, titulo:"La danza de Dragones", autor:"R. R. George Martin", aniopublicacion:"2011", estado:"reservado"},
-{id: 4, titulo:"Fuego y Sangre", autor:"R. R. George Martin", aniopublicacion:"2018", estado:"daniado"}];
+let libros = [{id: 1, titulo:"Game of thrones", autor:"R. R. George Martin", aniopublicacion:1996, estado:"disponible"},
+{id: 2, titulo:"El Caballero de los 7 reinos", autor:"R. R. George Martin", aniopublicacion: 2015, estado:"prestado"},
+{id: 3, titulo:"La danza de Dragones", autor:"R. R. George Martin", aniopublicacion: 2011, estado:"reservado"},
+{id: 4, titulo:"Fuego y Sangre", autor:"R. R. George Martin", aniopublicacion: 2018, estado:"daniado"}];
 
 
 app.get("/libros", (req,res) => {
@@ -59,7 +59,8 @@ app.put ("/libros/:id", (req,res) => {
   const id = parseInt(req.params.id);
   const datos = req.body
 
-  let isExist = false
+  let isExist = false;
+  let errorestado = false;
 
   libros.forEach(libro => {
 
@@ -75,30 +76,36 @@ app.put ("/libros/:id", (req,res) => {
         libro.autor = datos.autor;
       }
       if(datos.aniopublicacion){
-        libro.aniopublicacion = datos.autor;
+        libro.aniopublicacion = (datos.aniopublicacion);
       }
+      
       if(datos.estado){
-      let valido = false;
 
       switch (datos.estado){
-       case "disposuble":
+       case "disponible":
        case "prestado":
        case "reservado":
        case "daniado":
-        valido = true;
+        libro.estado = datos.estado;
         break;
-        default;
-        valido = false;
+        default:
+        errorestado = true;
 
       }
-
-      }
-
-
-    } 
-  })
+   } 
+  }
 });
  
+ if(errorestado){
+  return res.status(400).json ({message: "Solo se permiten valores sugeridos"})
+ };
+ if (!isExist){
+  return res.status(404).json({status:404,message:"El libro no se encontro",});
+ }else {
+   res.status(200).json({status:200, message:"El libro se actualizo correctamente",data:(libros)}) 
+  }
+
+});
 
 app.listen(PORT, ()=>{
     console.log(`Escuchando en http://localhost:${PORT}/`);
