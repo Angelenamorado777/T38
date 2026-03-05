@@ -4,5 +4,6 @@ Repositorio de clase
 - Ejemplo de comandos git clase viernes
 - Ejemplo 2
 - Ejemplo de pull request
+- Hola
 
 Aquí agregamos cada cambio que se realiza y una breve descipción del proyecto.
